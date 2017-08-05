@@ -1,26 +1,29 @@
-package com.codepath.simpletodo;
+package com.codepath.simpletodo.activities.todoList;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import org.apache.commons.io.FileUtils;
+import com.codepath.simpletodo.R;
+import com.codepath.simpletodo.activities.EditItemActivity;
+import com.codepath.simpletodo.models.TodoItem;
+import com.codepath.simpletodo.models.TodoItemArrayAdapter;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     private final int EDIT_ITEM_REQUEST_CODE = 1337;
 
-    ArrayList<String> items;
-    ArrayAdapter<String> itemsAdapter;
     ListView lvItems;
+    List<TodoItem> todoItems;
+    TodoItemArrayAdapter todoItemsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         lvItems = (ListView)findViewById(R.id.lvItems);
         readItems();
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
-        lvItems.setAdapter(itemsAdapter);
+        todoItemsAdapter = new TodoItemArrayAdapter(this, todoItems);
+        lvItems.setAdapter(todoItemsAdapter);
         setupListViewListeners();
     }
 
@@ -67,57 +70,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void removeItem(int itemIndex) {
-        items.remove(itemIndex);
-        itemsAdapter.notifyDataSetChanged();
+        TodoItem todoItem = todoItems.get(itemIndex);
 
-        writeItems();
+        todoItems.remove(itemIndex);
+        todoItemsAdapter.notifyDataSetChanged();
+
+        todoItem.delete();
     }
 
     public void onAddItem(View view) {
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
-        items.add(itemText);
-        writeItems();
+
+        TodoItem todoItem = new TodoItem();
+        todoItem.id = UUID.randomUUID();
+        todoItem.creationDate = new Date();
+        todoItem.title = itemText;
+        todoItem.save();
+
+        todoItems.add(todoItem);
+
         etNewItem.setText("");
     }
 
     private void editItem(int itemIndex) {
+        TodoItem todoItem = todoItems.get(itemIndex);
+
         Intent editItemIntent = new Intent(this, EditItemActivity.class);
 
         editItemIntent.putExtra(EditItemActivity.ITEM_INDEX, itemIndex);
-        editItemIntent.putExtra(EditItemActivity.ITEM_NAME, items.get(itemIndex));
+        editItemIntent.putExtra(EditItemActivity.ITEM_NAME, todoItem.title);
 
         startActivityForResult(editItemIntent, EDIT_ITEM_REQUEST_CODE);
     }
 
     private void onEditedItem(int itemIndex, String itemText) {
-        items.set(itemIndex, itemText);
-        itemsAdapter.notifyDataSetChanged();
+        TodoItem todoItem = todoItems.get(itemIndex);
+        todoItem.title = itemText;
+        todoItem.save();
 
-        writeItems();
+        todoItemsAdapter.notifyDataSetChanged();
     }
 
     private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-
-        try {
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        }
-        catch (IOException e) {
-            items = new ArrayList<>();
-        }
-    }
-
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-
-        try {
-            FileUtils.writeLines(todoFile, items);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        todoItems = SQLite.select().from(TodoItem.class).queryList();
     }
 }
