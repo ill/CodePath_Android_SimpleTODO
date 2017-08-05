@@ -12,6 +12,7 @@ import com.codepath.simpletodo.R;
 import com.codepath.simpletodo.activities.EditItemActivity;
 import com.codepath.simpletodo.models.TodoItem;
 import com.codepath.simpletodo.models.TodoItemArrayAdapter;
+import com.codepath.simpletodo.models.TodoItem_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.Date;
@@ -113,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void readItems() {
-        todoItems = SQLite.select().from(TodoItem.class).queryList();
+        todoItems = SQLite.select()
+                .from(TodoItem.class)
+                .orderBy(TodoItem_Table.creationDate, true)
+                .queryList();
     }
 }
