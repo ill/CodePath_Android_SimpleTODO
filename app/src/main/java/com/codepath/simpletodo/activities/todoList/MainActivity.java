@@ -2,10 +2,10 @@ package com.codepath.simpletodo.activities.todoList;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.codepath.simpletodo.R;
@@ -15,9 +15,7 @@ import com.codepath.simpletodo.models.TodoItemArrayAdapter;
 import com.codepath.simpletodo.models.TodoItem_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     private final int EDIT_ITEM_REQUEST_CODE = 1337;
@@ -80,18 +78,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAddItem(View view) {
-        EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
-        String itemText = etNewItem.getText().toString();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        TodoListCreationDialog todoCreationDialog = new TodoListCreationDialog();
+        todoCreationDialog.show(fragmentManager, "fragment_todo_list_creation_dialog");
 
-        TodoItem todoItem = new TodoItem();
-        todoItem.id = UUID.randomUUID();
-        todoItem.creationDate = new Date();
-        todoItem.title = itemText;
-        todoItem.save();
 
-        todoItems.add(todoItem);
-
-        etNewItem.setText("");
+//        EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
+//        String itemText = etNewItem.getText().toString();
+//
+//        TodoItem todoItem = new TodoItem();
+//        todoItem.id = UUID.randomUUID();
+//        todoItem.creationDate = new Date();
+//        todoItem.title = itemText;
+//        todoItem.save();
+//
+//        todoItems.add(todoItem);
+//
+//        etNewItem.setText("");
     }
 
     private void editItem(int itemIndex) {
