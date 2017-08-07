@@ -1,5 +1,7 @@
 package com.codepath.simpletodo.models;
 
+import android.os.Parcelable;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;

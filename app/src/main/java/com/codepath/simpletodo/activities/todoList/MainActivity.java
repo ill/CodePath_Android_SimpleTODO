@@ -17,8 +17,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-    implements TodoListCreationDialog.TodoCreationDialogListener {
+public class MainActivity extends AppCompatActivity {
     private final int EDIT_ITEM_REQUEST_CODE = 1337;
 
     ListView lvItems;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                editItem(position);
+                viewItem(position);
             }
         });
 
@@ -81,19 +80,34 @@ public class MainActivity extends AppCompatActivity
     public void onAddItem(View view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         TodoListCreationDialog todoCreationDialog = new TodoListCreationDialog();
-        todoCreationDialog.listener = this;
+        todoCreationDialog.listener = new TodoListCreationDialog.TodoCreationDialogListener() {
+            @Override
+            public void onTodoCreationDialogItemCreated(TodoItem todoItem, TodoListCreationDialog todoCreationDialog) {
+                todoCreationDialog.dismiss();
+                todoItems.add(todoItem);
+                todoItemsAdapter.notifyDataSetChanged();
+            }
+        };
         todoCreationDialog.show(fragmentManager, "fragment_todo_list_creation_dialog");
     }
 
-    private void editItem(int itemIndex) {
+    private void viewItem(int itemIndex) {
         TodoItem todoItem = todoItems.get(itemIndex);
 
-        Intent editItemIntent = new Intent(this, EditItemActivity.class);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        TodoListDetailsDialog todoDetailsDialog = new TodoListDetailsDialog();
+        //todoCreationDialog.listener = this;
+        todoDetailsDialog.todoItem = todoItem;
+        todoDetailsDialog.show(fragmentManager, "fragment_todo_list_details_dialog");
 
-        editItemIntent.putExtra(EditItemActivity.ITEM_INDEX, itemIndex);
-        editItemIntent.putExtra(EditItemActivity.ITEM_NAME, todoItem.title);
-
-        startActivityForResult(editItemIntent, EDIT_ITEM_REQUEST_CODE);
+//        TodoItem todoItem = todoItems.get(itemIndex);
+//
+//        Intent editItemIntent = new Intent(this, EditItemActivity.class);
+//
+//        editItemIntent.putExtra(EditItemActivity.ITEM_INDEX, itemIndex);
+//        editItemIntent.putExtra(EditItemActivity.ITEM_NAME, todoItem.title);
+//
+//        startActivityForResult(editItemIntent, EDIT_ITEM_REQUEST_CODE);
     }
 
     private void onEditedItem(int itemIndex, String itemText) {
@@ -109,12 +123,5 @@ public class MainActivity extends AppCompatActivity
                 .from(TodoItem.class)
                 .orderBy(TodoItem_Table.creationDate, true)
                 .queryList();
-    }
-
-    @Override
-    public void onTodoCreationDialogItemCreated(TodoItem todoItem, TodoListCreationDialog todoCreationDialog) {
-        todoCreationDialog.dismiss();
-        todoItems.add(todoItem);
-        todoItemsAdapter.notifyDataSetChanged();
     }
 }

@@ -9,14 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.simpletodo.R;
+import com.codepath.simpletodo.activities.todoDetails.TodoDetails;
+import com.codepath.simpletodo.models.TodoItem;
 
 public class TodoListDetailsDialog extends DialogFragment {
-
+    public TodoItem todoItem;
+    public TodoDetails frTodoDetails;
 
     public TodoListDetailsDialog() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,12 +28,21 @@ public class TodoListDetailsDialog extends DialogFragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        frTodoDetails = (TodoDetails)getActivity().getSupportFragmentManager().findFragmentById(R.id.frTodoDetails);
+        //frTodoDetails.listener = this;
+        frTodoDetails.todoItem = todoItem; 
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
         //https://stackoverflow.com/questions/7008183/error-inflating-fragment-in-dialog-the-second-time
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.remove(getActivity().getSupportFragmentManager().findFragmentById(R.id.frTodoDetails));
+        fragmentTransaction.remove(frTodoDetails);
         fragmentTransaction.commit();
     }
 }

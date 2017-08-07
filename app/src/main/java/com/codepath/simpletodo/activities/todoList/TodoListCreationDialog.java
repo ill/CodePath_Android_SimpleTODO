@@ -12,7 +12,7 @@ import com.codepath.simpletodo.R;
 import com.codepath.simpletodo.activities.todoDetails.TodoCreation;
 import com.codepath.simpletodo.models.TodoItem;
 
-public class TodoListCreationDialog extends DialogFragment implements TodoCreation.TodoCreationFragmentListener {
+public class TodoListCreationDialog extends DialogFragment {
     public TodoCreation frTodoCreation;
     public TodoCreationDialogListener listener;
 
@@ -35,8 +35,13 @@ public class TodoListCreationDialog extends DialogFragment implements TodoCreati
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        frTodoCreation = (TodoCreation)getFragmentManager().findFragmentById(R.id.frTodoCreation);
-        frTodoCreation.listener = this;
+        frTodoCreation = (TodoCreation)getActivity().getSupportFragmentManager().findFragmentById(R.id.frTodoCreation);
+        frTodoCreation.listener = new TodoCreation.TodoCreationFragmentListener() {
+            @Override
+            public void onTodoCreationFragmentItemCreated(TodoItem todoItem, TodoCreation todoCreation) {
+                listener.onTodoCreationDialogItemCreated(todoItem, TodoListCreationDialog.this);
+            }
+        };
     }
 
     @Override
@@ -45,12 +50,7 @@ public class TodoListCreationDialog extends DialogFragment implements TodoCreati
 
         //https://stackoverflow.com/questions/7008183/error-inflating-fragment-in-dialog-the-second-time
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.remove(getActivity().getSupportFragmentManager().findFragmentById(R.id.frTodoCreation));
+        fragmentTransaction.remove(frTodoCreation);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onTodoCreationFragmentItemCreated(TodoItem todoItem, TodoCreation todoCreation) {
-        listener.onTodoCreationDialogItemCreated(todoItem, this);
     }
 }
