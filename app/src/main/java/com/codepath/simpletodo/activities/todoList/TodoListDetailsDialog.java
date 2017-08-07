@@ -30,8 +30,8 @@ public class TodoListDetailsDialog extends DialogFragment {
         super.onDestroyView();
 
         //https://stackoverflow.com/questions/7008183/error-inflating-fragment-in-dialog-the-second-time
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.remove(getFragmentManager().findFragmentById(R.id.frTodoDetails));
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.remove(getActivity().getSupportFragmentManager().findFragmentById(R.id.frTodoDetails));
         fragmentTransaction.commit();
     }
 }

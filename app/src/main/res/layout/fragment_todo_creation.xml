@@ -5,10 +5,20 @@
     tools:context="com.codepath.simpletodo.activities.todoDetails.TodoCreation">
 
     <fragment
-        android:id="@+id/frTodoCreation"
+        android:id="@+id/frTodoDetailsBase"
         android:name="com.codepath.simpletodo.activities.todoDetails.TodoDetailsBase"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/btCreate"
         tools:layout="@layout/fragment_todo_details_base" />
+
+    <Button
+        android:id="@+id/btCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/btCreate" />
 
 </RelativeLayout>

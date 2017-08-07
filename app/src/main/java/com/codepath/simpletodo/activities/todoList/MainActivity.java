@@ -17,7 +17,8 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+    implements TodoListCreationDialog.TodoCreationDialogListener {
     private final int EDIT_ITEM_REQUEST_CODE = 1337;
 
     ListView lvItems;
@@ -80,21 +81,8 @@ public class MainActivity extends AppCompatActivity {
     public void onAddItem(View view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         TodoListCreationDialog todoCreationDialog = new TodoListCreationDialog();
+        todoCreationDialog.listener = this;
         todoCreationDialog.show(fragmentManager, "fragment_todo_list_creation_dialog");
-
-
-//        EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
-//        String itemText = etNewItem.getText().toString();
-//
-//        TodoItem todoItem = new TodoItem();
-//        todoItem.id = UUID.randomUUID();
-//        todoItem.creationDate = new Date();
-//        todoItem.title = itemText;
-//        todoItem.save();
-//
-//        todoItems.add(todoItem);
-//
-//        etNewItem.setText("");
     }
 
     private void editItem(int itemIndex) {
@@ -121,5 +109,12 @@ public class MainActivity extends AppCompatActivity {
                 .from(TodoItem.class)
                 .orderBy(TodoItem_Table.creationDate, true)
                 .queryList();
+    }
+
+    @Override
+    public void onTodoCreationDialogItemCreated(TodoItem todoItem, TodoListCreationDialog todoCreationDialog) {
+        todoCreationDialog.dismiss();
+        todoItems.add(todoItem);
+        todoItemsAdapter.notifyDataSetChanged();
     }
 }
