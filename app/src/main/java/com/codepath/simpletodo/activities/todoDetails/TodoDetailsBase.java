@@ -33,4 +33,9 @@ public class TodoDetailsBase extends Fragment {
     public String getTitleString() {
         return etTitle.getText().toString();
     }
+
+    public void setTitleString(String title) {
+        etTitle.setText("");
+        etTitle.append(title);
+    }
 }

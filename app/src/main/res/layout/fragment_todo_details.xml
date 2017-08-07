@@ -5,7 +5,7 @@
     tools:context="com.codepath.simpletodo.activities.todoDetails.TodoDetails">
 
     <fragment
-        android:id="@+id/frTodoDetails"
+        android:id="@+id/frTodoDetailsBase"
         android:name="com.codepath.simpletodo.activities.todoDetails.TodoDetailsBase"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

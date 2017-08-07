@@ -33,7 +33,7 @@ public class TodoListDetailsDialog extends DialogFragment {
 
         frTodoDetails = (TodoDetails)getActivity().getSupportFragmentManager().findFragmentById(R.id.frTodoDetails);
         //frTodoDetails.listener = this;
-        frTodoDetails.todoItem = todoItem; 
+        frTodoDetails.setTodoItem(todoItem);
     }
 
     @Override
