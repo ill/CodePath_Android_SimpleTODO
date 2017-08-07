@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.codepath.simpletodo.R;
 import com.codepath.simpletodo.models.TodoItem;
@@ -15,7 +16,13 @@ import com.codepath.simpletodo.models.TodoItem;
  */
 public class TodoDetails extends Fragment {
     TodoItem todoItem;
+    public TodoDetailsFragmentListener listener;
+    public Button btSave;
     public TodoDetailsBase frTodoDetailsBase;
+
+    public interface TodoDetailsFragmentListener {
+        void onTodoDetailsFragmentItemSaved(TodoDetails todoDetails);
+    }
 
     public TodoDetails() {
         // Required empty public constructor
@@ -33,6 +40,16 @@ public class TodoDetails extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         frTodoDetailsBase = (TodoDetailsBase)getChildFragmentManager().findFragmentById(R.id.frTodoDetailsBase);
+        btSave = (Button)view.findViewById(R.id.btSave);
+
+        //Took a while to figure out that setting the onClick listener in the xml doesn't work for fragments!
+        //https://stackoverflow.com/questions/14139774/android-app-crashing-fragment-and-xml-onclick
+        btSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSave();
+            }
+        });
     }
 
     public void setTodoItem(TodoItem todoItem) {
@@ -43,5 +60,16 @@ public class TodoDetails extends Fragment {
 
     void populateDetails() {
         frTodoDetailsBase.setTitleString(todoItem.title);
+    }
+
+    public void onSave() {
+        saveTodoItem();
+
+        listener.onTodoDetailsFragmentItemSaved(this);
+    }
+
+    public void saveTodoItem() {
+        todoItem.title = frTodoDetailsBase.getTitleString();
+        todoItem.save();
     }
 }

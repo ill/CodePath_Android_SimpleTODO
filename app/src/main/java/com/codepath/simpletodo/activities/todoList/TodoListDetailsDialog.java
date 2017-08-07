@@ -15,6 +15,11 @@ import com.codepath.simpletodo.models.TodoItem;
 public class TodoListDetailsDialog extends DialogFragment {
     public TodoItem todoItem;
     public TodoDetails frTodoDetails;
+    public TodoDetailsDialogListener listener;
+
+    public interface TodoDetailsDialogListener {
+        void onTodoDetailsDialogItemSaved(TodoListDetailsDialog todoDetailsDialog);
+    }
 
     public TodoListDetailsDialog() {
         // Required empty public constructor
@@ -32,7 +37,12 @@ public class TodoListDetailsDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         frTodoDetails = (TodoDetails)getActivity().getSupportFragmentManager().findFragmentById(R.id.frTodoDetails);
-        //frTodoDetails.listener = this;
+        frTodoDetails.listener = new TodoDetails.TodoDetailsFragmentListener() {
+            @Override
+            public void onTodoDetailsFragmentItemSaved(TodoDetails todoDetails) {
+                listener.onTodoDetailsDialogItemSaved(TodoListDetailsDialog.this);
+            }
+        };
         frTodoDetails.setTodoItem(todoItem);
     }
 
