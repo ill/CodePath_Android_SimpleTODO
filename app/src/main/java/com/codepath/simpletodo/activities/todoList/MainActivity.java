@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     private void readItems() {
         todoItems = SQLite.select()
                 .from(TodoItem.class)
+                .orderBy(TodoItem_Table.priority, false)
                 .orderBy(TodoItem_Table.creationDate, true)
                 .queryList();
     }

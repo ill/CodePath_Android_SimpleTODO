@@ -30,9 +30,19 @@ public class TodoItemArrayAdapter extends ArrayAdapter<TodoItem> {
         }
 
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+        TextView tvDueDate = (TextView) convertView.findViewById(R.id.tvDueDate);
+        TextView tvPriority = (TextView) convertView.findViewById(R.id.tvPriority);
 
         if (tvTitle != null) {
             tvTitle.setText(todoItem.title);
+        }
+
+        if (tvDueDate != null) {
+            tvDueDate.setText(todoItem.dueDate.toString());
+        }
+
+        if (tvPriority != null) {
+            tvPriority.setText(todoItem.priority.toString());
         }
 
         return convertView;

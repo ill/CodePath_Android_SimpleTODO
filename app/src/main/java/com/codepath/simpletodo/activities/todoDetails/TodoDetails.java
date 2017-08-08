@@ -60,6 +60,8 @@ public class TodoDetails extends Fragment {
 
     void populateDetails() {
         frTodoDetailsBase.setTitleString(todoItem.title);
+        frTodoDetailsBase.setPriority(todoItem.priority);
+        frTodoDetailsBase.setDate(todoItem.dueDate);
     }
 
     public void onSave() {
@@ -70,6 +72,8 @@ public class TodoDetails extends Fragment {
 
     public void saveTodoItem() {
         todoItem.title = frTodoDetailsBase.getTitleString();
+        todoItem.priority = frTodoDetailsBase.getPriority();
+        todoItem.dueDate = frTodoDetailsBase.getDate();
         todoItem.save();
     }
 }

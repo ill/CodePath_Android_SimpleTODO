@@ -67,6 +67,8 @@ public class TodoCreation extends Fragment {
         todoItem.id = UUID.randomUUID();
         todoItem.creationDate = new Date();
         todoItem.title = frTodoDetailsBase.getTitleString();
+        todoItem.dueDate = frTodoDetailsBase.getDate();
+        todoItem.priority = frTodoDetailsBase.getPriority();
         todoItem.save();
 
         return todoItem;

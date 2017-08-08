@@ -10,4 +10,9 @@
     <string name="etTitle">Task title</string>
     <string name="tvDueDate">Due Date</string>
     <string name="btCreate">Create task</string>
+
+    <string name="tvPriority">Priority</string>
+    <string name="priLow">Low</string>
+    <string name="priMedium">Medium</string>
+    <string name="priHigh">High</string>
 </resources>
