@@ -26,9 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         lvItems = (ListView)findViewById(R.id.lvItems);
-        readItems();
-        todoItemsAdapter = new TodoItemArrayAdapter(this, todoItems);
-        lvItems.setAdapter(todoItemsAdapter);
+        reloadData();
         setupListViewListeners();
     }
 
@@ -89,16 +87,14 @@ public class MainActivity extends AppCompatActivity {
         todoDetailsDialog.show(fragmentManager, "fragment_todo_list_details_dialog");
     }
 
-    private void readItems() {
+    private void reloadData() {
         todoItems = SQLite.select()
                 .from(TodoItem.class)
                 .orderBy(TodoItem_Table.priority, false)
                 .orderBy(TodoItem_Table.creationDate, true)
                 .queryList();
-    }
 
-    private void reloadData() {
-        readItems();
-        todoItemsAdapter.notifyDataSetChanged();
+        todoItemsAdapter = new TodoItemArrayAdapter(this, todoItems);
+        lvItems.setAdapter(todoItemsAdapter);
     }
 }
