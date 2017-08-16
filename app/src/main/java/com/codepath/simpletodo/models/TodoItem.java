@@ -6,9 +6,11 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.raizlabs.android.dbflow.converter.TypeConverter;
 
 import java.util.Date;
 import java.util.UUID;
+
 
 /**
  * Created by ilyaseletsky on 8/4/17.
@@ -19,6 +21,28 @@ public class TodoItem extends BaseModel {
         LOW(0, R.string.priLow),
         MEDIUM(1, R.string.priMedium),
         HIGH(2, R.string.priHigh);
+
+        @com.raizlabs.android.dbflow.annotation.TypeConverter
+        public static class PriorityConverter extends TypeConverter<Integer, Priority> {
+            @Override
+            public Integer getDBValue(Priority model) {
+                return model.getValue();
+            }
+
+            @Override
+            public Priority getModelValue(Integer data) {
+                switch(data) {
+                    case 0:
+                        return LOW;
+                    case 1:
+                        return MEDIUM;
+                    case 2:
+                        return HIGH;
+                    default:
+                        return LOW;
+                }
+            }
+        }
 
         private final int value;
         private final int resourceId;
@@ -55,6 +79,6 @@ public class TodoItem extends BaseModel {
     @Column
     public Date dueDate;
 
-    @Column
+    @Column(typeConverter = Priority.PriorityConverter.class)
     public Priority priority;
 }
