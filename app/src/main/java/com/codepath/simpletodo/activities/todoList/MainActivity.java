@@ -3,6 +3,9 @@ package com.codepath.simpletodo.activities.todoList;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -28,6 +31,27 @@ public class MainActivity extends AppCompatActivity {
         lvItems = (ListView)findViewById(R.id.lvItems);
         reloadData();
         setupListViewListeners();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.btCreate:
+                addItem();
+                break;
+
+            default:
+                break;
+        }
+
+        return true;
     }
 
     private void setupListViewListeners() {
@@ -58,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         todoItem.delete();
     }
 
-    public void onAddItem(View view) {
+    private void addItem() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         TodoListCreationDialog todoCreationDialog = new TodoListCreationDialog();
         todoCreationDialog.listener = new TodoListCreationDialog.TodoCreationDialogListener() {
