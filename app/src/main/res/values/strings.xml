@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SimpleTodo</string>
+    <string name="app_name">Pusheen\'s Todo</string>
     <string name="etNewItem">Enter a new item</string>
     <string name="btnAddItem">Add Item</string>
     <string name="txEditItemLabel">Edit Item Below</string>
