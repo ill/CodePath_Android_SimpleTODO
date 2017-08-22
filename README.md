@@ -4,7 +4,7 @@ Pusheen's Todo is a Pusheen themed Todo list Android App.
 
 Submitted by: Ilya Seletsky
 
-Time spent: 4 hours spent in total
+Time spent: About 4 hours on the initial part and about 30 hours total learning about all the other things to improve the app
 
 ## User Stories
 
@@ -50,24 +50,32 @@ On iOS you typically push a view controller onto the stack.  You set some data u
 
 To pass data back on iOS you'd use delegates or some other mechanism to pass back to the calling view controller.  On Android, you tell the activity to finish, and pass the data back with an inent.
 
-So far, the interface builder on Android is nicer.  Our team refuses to even use the iOS interface builder and we do it all in code.  On Android, it's nice that youc an edit the xml to really make sure things are correct, whereas on iOS editing the xib file isn't as user friendly.  You're supposed to be able to do it all through the buggy UI of the interface builder.
-
-It's also nice that there's a built in Array adapter for lists.  This makes handling simple cases like an array of some objects easy on Android.  On iOS there are all sorts of UITableViewDataSource methods that need to be implemented, making it cumbersome to do something very simple for beginners.  It's good for when things get complicated and you need the flexibility.  On Android, I'm sure the option is there to make things flexible and complicated as well, for when the time comes.
+So far, the interface builder on Android is nicer.  Our team refuses to even use the iOS interface builder and we do it all in code.  On Android, it's nice that you can edit the xml to really make sure things are correct, whereas on iOS editing the xib file isn't as user friendly.  You're supposed to be able to do it all through the buggy UI of the interface builder.
 
 **Question 2:** "Take a moment to reflect on the `ArrayAdapter` used in your pre-work. How would you describe an adapter in this context and what is its function in Android? Why do you think the adapter is important? Explain the purpose of the `convertView` in the `getView` method of the `ArrayAdapter`."
 
 **Answer:**
 
-The adapter most likely handles taking the elements of the array of strings, and telling the list to display those elements.  On iOS, you'd have tableViewDataSource methods like number of rows in section, cellForRow at path, number of sections, etc...  On Android, you set per list, the instance of a data source object, and it's the Adapter object's job to tell the list these things.
+The adapter handles taking the elements of the array of strings, and telling the list to display those elements.  On iOS, you'd have tableViewDataSource methods like number of rows in section, cellForRow at path, number of sections, etc...  On Android, you set per list, the instance of a data source object, and it's the Adapter object's job to tell the list these things.
 
-According to the docs, getView takes a convertView that can be reused to display new data.  It's able to recycle an existing view as you scroll, just like on iOS.  This is better for performance and smoother scrolling since it doesn't have to keep reinstantiating a new view.  It can just reuse one that is no longer visible due to being scrolled past.
+GetView takes a convertView that can be reused to display new data.  It's able to recycle an existing view as you scroll, just like on iOS.  This is better for performance and smoother scrolling since it doesn't have to keep reinstantiating a new view.  It can just reuse one that is no longer visible due to being scrolled past.
 
 It's also possible to create a new view if that one isn't usable for that data item.  This could be useful if you have different kind of list cells for different elements in the list.
+
+It looks like Adapter objects can be used in many different situations.  You can use one for the spinner control as well because that displays items in a list.
 
 
 ## Notes
 
 Describe any challenges encountered while building the app.
+
+Figuring out how to store priority as an enum in SQLite.  I read about TypeConverters so I can store it as a number rather than the enum string.  Otherwise it wouldn't sort correctly in order of priority.  It sorted by the ENUM string name.  I could've also just stored it as an int but I wanted to figure out how to use enums so I could do more things like that in future projects.  I also had to figure out how to have the priority enum ToString method return a localized string for each priority.
+
+I also ran into a lot of issues with Fragments.  I structured my code so the edit dialog and create dialog all reuse the same common base fragment.  Once I got it working, it was really nice to just modify one central location, and reuse layouts and code.  Learning how to display the different fragments and have them talk to each other took some time.  Also took me a while to figure out that in Fragments, you can't set a button action through XML like you can with activities.  It had to be done programatically.
+
+Learning about all the things I can do with DBFlow and Fragments was the most time consuming.
+
+I also spent a lot of time learning more about string resources, dimensions, colors, themes, etc...  A lot of these things could have been hardcoded on the spot, but I wanted to understand how to make these things reusable.  That way I can define common padding between UI elements in one place and reuse them everywhere in the app.  I just say, set padding to "cellSpacing" instead of remembering "8dp".
 
 ## License
 
