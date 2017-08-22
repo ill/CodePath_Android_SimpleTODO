@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="@dimen/cellSpacing">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -17,15 +17,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Title"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#000000"/>
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/boldHeaderSize"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvDueDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
+            android:paddingTop="@dimen/cellSpacing"
             android:text="DueDate" />
     </LinearLayout>
 
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:paddingLeft="8dp"
+        android:paddingLeft="@dimen/cellSpacing"
         android:text="Priority"
         android:textAlignment="gravity" />
 </LinearLayout>

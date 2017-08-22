@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="cellSpacing">8dp</dimen>
+    <dimen name="detailsPadding">12dp</dimen>
+    <dimen name="boldHeaderSize">18sp</dimen>
+    <dimen name="calendarSize">150dp</dimen>
+</resources>
