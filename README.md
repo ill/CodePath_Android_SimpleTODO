@@ -53,6 +53,8 @@ To pass data back on iOS you'd use delegates or some other mechanism to pass bac
 
 So far, the interface builder on Android is nicer.  Our team refuses to even use the iOS interface builder and we do it all in code.  On Android, it's nice that you can edit the xml to really make sure things are correct, whereas on iOS editing the xib file isn't as user friendly.  You're supposed to be able to do it all through the buggy UI of the interface builder.
 
+It's also nice that Android actually comes with LinearLayout like every other proper UI framework.  Not sure why it took iOS until verison 9.0 to finally have StackLayout.  I guess people got used to the painful way of manually laying things out when they're arranged in a row.
+
 **Question 2:** "Take a moment to reflect on the `ArrayAdapter` used in your pre-work. How would you describe an adapter in this context and what is its function in Android? Why do you think the adapter is important? Explain the purpose of the `convertView` in the `getView` method of the `ArrayAdapter`."
 
 **Answer:**
