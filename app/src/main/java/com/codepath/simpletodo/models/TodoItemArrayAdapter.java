@@ -1,6 +1,8 @@
 package com.codepath.simpletodo.models;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.codepath.simpletodo.R;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -38,11 +41,29 @@ public class TodoItemArrayAdapter extends ArrayAdapter<TodoItem> {
         }
 
         if (tvDueDate != null) {
-            tvDueDate.setText(todoItem.dueDate.toString());
+            tvDueDate.setText(String.format(getContext().getResources().getString(R.string.tvDueAt),
+                    new SimpleDateFormat("dd/MM/yyyy").format(todoItem.dueDate)));
         }
 
         if (tvPriority != null) {
             tvPriority.setText(todoItem.priority.toString());
+
+            switch(todoItem.priority) {
+                case LOW:
+                    tvPriority.setTextColor(Color.GREEN);
+                    tvPriority.setTypeface(Typeface.DEFAULT);
+                    break;
+
+                case MEDIUM:
+                    //make medium be normal and not show
+                    tvPriority.setText("");
+                    break;
+
+                case HIGH:
+                    tvPriority.setTextColor(Color.RED);
+                    tvPriority.setTypeface(Typeface.DEFAULT_BOLD);
+                    break;
+            }
         }
 
         return convertView;
